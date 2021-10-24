@@ -1,0 +1,22 @@
+## messageSource=classpath:/trainingcore/messages/email-forgottenPassword_$lang.properties
+#macro(genHtmlLinkStartTag $url)
+<a href="$url"><font color="#666666">
+#end
+#macro(genHtmlLinkEndTag)
+</font></a>
+#end
+#macro(genHtmlLink $url $textColor $bodyContent)
+<a href="$url"><font color="$textColor">$bodyContent</font></a>
+#end
+
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+<body bgcolor="#ffffff"
+	<h1>Hello ${ctx.Name}</h1>
+
+            <p>This is a Abandonded cart Email from Hybris</p>
+            ${ctx.cart.uid}
+</body>
+</html>
