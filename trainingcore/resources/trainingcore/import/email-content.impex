@@ -1,0 +1,24 @@
+# Content Catalog Version
+$contentCatalog=testCatalog
+$contentCV=catalogVersion(catalog(id[default=$contentCatalog]),version[default='Staged'])[unique=true,default='$contentCatalog:Staged']
+$jarResourceCms=jar:com.hybris.training.core.constants.TrainingCoreConstants&/trainingcore/imports/emails
+$lang=en
+
+# Path to the Velocity Templates
+$emailResource=jar:com.hybris.training.core.constants.TrainingCoreConstants&/trainingcore/imports/emails
+$siteResource=jar:com.hybris.training.core.constants.TrainingCoreConstants&/trainingcore/imports/emails
+# Package of the Context class
+$emailPackageName=com.hybris.training.facades.process.email.context
+
+# Create Template Renderers
+INSERT_UPDATE RendererTemplate; code[unique = true]           ; contextClass                                  ; templateScript[lang = en, translator = de.hybris.platform.commerceservices.impex.impl.FileLoaderValueTranslator]; rendererType(code)[default = 'velocity']
+                              ; email-abandonedCartMail-body           ; $emailPackageName.AbandonedCartMailContext        ; $emailResource/email-abandondedMailBody.vm
+                              ; email-abandonedCartMail-subject        ; $emailPackageName.AbandonedCartMailContext        ; $emailResource/email-abandondedMailSubject.vm
+
+# Create Email page Template
+INSERT_UPDATE EmailPageTemplate; $contentCV[unique = true]; uid[unique = true]           ; active; frontendTemplateName    ; subject(code)                           ; htmlTemplate(code)                   ; restrictedPageTypes(code)
+                               ;                          ; AbandonedCartMailTemplate    ; true  ; abandonedCartMailContext; email-abandonedCartMail-subject         ; email-abandonedCartMail-body         ; EmailPage
+
+# Create Email Page
+INSERT_UPDATE EmailPage; $contentCV[unique = true]; uid[unique = true]       ; masterTemplate(uid, $contentCV); approvalStatus(code)[default = 'approved']; fromEmail                             ; fromName
+                       ;                          ; abandonedCartMail        ; AbandonedCartMailTemplate      ;                                           ; "atmprakash.sharma@gmail.com" ; "Electronic store training sample mail for abonded cart"
